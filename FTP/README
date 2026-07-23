@@ -1,0 +1,23 @@
+FTP
+    Filezilla server is used
+
+    create a user on filezilla server with user name as admin and password as admin
+
+    In server listeners set as Explicit FTP over TLS and insecure plain FTP
+
+    In configuration set the following paths
+    
+        Virtal path (To be given in client app url)
+            
+            example:    
+            /Files
+            ftpUrl = "ftp://admin:admin@localhost/Files/test.txt";
+
+        Native path (Actual path of the files in FTP server)
+    
+            example:
+            /home/bharadwaj/QBurst/c++/FTP_Server
+
+    compilation:
+
+        g++ test.cpp -o test -lcurl
