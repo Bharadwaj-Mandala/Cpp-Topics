@@ -1,0 +1,23 @@
+To disable copy elision in C++, you must pass specific compiler flags during compilation. However, your ability to completely turn it off depends heavily on the C++ standard version you are targeting.
+
+1. Compiler Flags
+
+• GCC / Clang: Use the flag -fno-elide-constructors.
+• MSVC (Visual Studio 2022 v17.4+): Use the flag /Zc:nrvo-. Note that this explicitly disables optional Named Return Value Optimization (NRVO).
+
+
+2. The Catch: Mandatory vs. Optional Elision
+
+How these flags behave changes drastically based on whether you are compiling with C++14 or older versus C++17 or newer.
+
+NOTE:   If running using code runner extension like play button in Visual Studio Code
+        the changes has to be made in 
+
+        ctl+Shift+P 
+        -> 
+        Preferences: Open User Settings(JSON) 
+        -> 
+        "code-runner.executorMap": {"cpp": "cd $dir && g++ -std=c++20 -fno-elide-constructors -Wall $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"},
+
+
+Adding -fno-elide-constructors as a compilation argument disables Copy elision
