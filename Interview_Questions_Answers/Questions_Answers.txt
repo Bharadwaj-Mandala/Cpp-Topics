@@ -8,6 +8,7 @@ Ans)        By default access specifiers are public for structure and private fo
 
 3)      Why virtual is used for functions and destructors but not for constructors ?
  Ans)       #include <iostream>
+ 
             using namespace std;
 
             class A
@@ -114,3 +115,18 @@ Ans)        By default access specifiers are public for structure and private fo
                         Thus in order to solve this problem we use
                         virtual functions.
             */
+
+4)      what is constexpr ?
+Ans)    Is as specifier used to instruct constructor to evaluate instructions at compile time 
+        rather than run time which are constant in nature.
+        
+            Example
+
+                    constexpr int add(int a, int b){
+                        return (a+b);
+                    }    
+
+                    int main(){
+                        int x = add(1,2);   /*  Here 1,2 are fixed values, which doesn't change*/
+                    }
+        
