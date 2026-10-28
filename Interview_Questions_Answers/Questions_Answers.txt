@@ -129,4 +129,54 @@ Ans)    Is as specifier used to instruct constructor to evaluate instructions at
                     int main(){
                         int x = add(1,2);   /*  Here 1,2 are fixed values, which doesn't change*/
                     }
+
+5)      Volatile key word ?
+Ans)    If a variable is declared Volatile, the value is fetched(Load) from memory to CPU,
+        do the computation(Modify) and push back(Update) into memory AVOIDING CACHE.
+
+        If not declared Volatile, in the process of compiler optimization the value might load 
+        via cache and thus actual state of the variable might be unknow to some other process.
+
+6)      Union and variant
+Ans)    Union is similar to struct in collection of different data types, but varies in memory 
+        allocation, 
+                    struct                                       union        
+        memory is allocated to all the members      memory is allocated at a time to either
+                                                    of the member (highest data type memory)
         
+        Data is retained in all the members         latest used member data is retained
+        -------------------------------------------------------------------------------------
+        
+        from c++17 upgraded type of union called variant is introduced
+
+        // C++ Program to illustrate std::variant
+            #include <iostream>
+            #include <string>
+            #include <variant>
+
+            using namespace std;
+
+            int main()
+            {
+                variant<int, double, string> myVariant;
+
+                myVariant = 42; // Assign an int
+                // Access the int
+                if (holds_alternative<int>(myVariant)) {
+                    cout << get<int>(myVariant) << endl;
+                }
+
+                myVariant = 3.14; // Assign a double
+                // Access the double
+                if (holds_alternative<double>(myVariant)) {
+                    cout << get<double>(myVariant) << endl;
+                }
+
+                myVariant = "Hello, Variant!"; // Assign a string
+                // Access the string
+                if (holds_alternative<string>(myVariant)) {
+                    cout << get<string>(myVariant) << endl;
+                }
+
+                return 0;
+            }
