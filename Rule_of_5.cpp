@@ -11,6 +11,17 @@ private:
     size_t capacity; //  Capacity of the vector
 
 public:
+    /*  MyVector<int> v1 = {1, 2, 3, 7, 8, 9};  */
+    MyVector(initializer_list<T> init) : size(init.size()), capacity(init.size())
+    {
+        cout << "Initilializer List constructor" << endl;
+        // Allocate memory for the elements
+        arr = new T[capacity];
+
+        // Copy elements from the initializer_list into the internal array
+        copy(init.begin(), init.end(), arr);
+    }
+
     MyVector() : size(0), capacity(1) //  constructor
     {
         arr = new T[capacity];
@@ -91,9 +102,8 @@ public:
         T *new_arr = new T[capacity];
         for (size_t i = 0; i < size; i++)
         {
-            new_arr[i] = arr[i];
+            new_arr[i] = move(arr[i]);
         }
-
         delete[] arr;
         arr = new_arr;
     }
