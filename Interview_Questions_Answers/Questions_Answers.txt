@@ -180,3 +180,62 @@ Ans)    Union is similar to struct in collection of different data types, but va
 
                 return 0;
             }
+
+7)      Rule Zero C++
+
+Ans)    When an object of your class is destroyed, the C++ compiler automatically inserts calls 
+        to the destructors of all its non-static member variables, in the exact reverse order they 
+        were declared. Because std::vector is a member variable (a value, not a raw pointer), 
+        its lifecycle is tied directly to your class. You do not need to write scores.~vector()—the 
+        compiler generates that cleanup sequence behind the scenes.
+
+        Because std::vector is a member variable (a value, not a raw pointer), its lifecycle is tied 
+        directly to your class. You do not need to write scores.~vector()—the compiler generates that 
+        cleanup sequence behind the scenes.
+
+                class Game {
+                        std::string level_name;      // Declared 1st
+                        std::vector<int> high_scores; // Declared 2nd
+                    public:
+                        Game() : level_name("Forest"), high_scores({100, 200, 300}) {}
+                        // You write NO destructor here.
+                };
+
+                    void play() {
+                            Game current_game; // 1. level_name constructed, then high_scores constructed.
+                        } // 2. current_game goes out of scope here!
+        
+        When play() hits the closing brace }, the compiler executes this invisible chain reaction:
+            1. ~Game() runs (the compiler-generated empty destructor).
+            2. high_scores.~vector() runs (destroyed first because it was declared last). std::vector internally 
+                runs delete[] on its heap buffer, freeing the memory for {100, 200, 300}.
+            3. level_name.~string() runs (destroyed second). std::string frees the heap memory holding "Forest".
+
+            
+        
+        Why This Fails With Raw Pointers
+
+            If you used a raw pointer (std::vector<int>* high_scores; or int* high_scores;), the compiler still runs 
+            the member's destructor automatically—but the destructor of a raw pointer does nothing.
+            • Object member (std::vector<int>): Has a destructor that frees heap memory.
+            • Pointer member (int*): Is just a memory address; destroying it only erases the address, 
+            leaving the heap memory leaked unless you manually call delete.
+
+        Bonus: Exception Safety
+
+        This automatic destruction also happens during stack unwinding. 
+        If your code throws an exception halfway through 
+        a function, C++ still guarantees that ~Game() and ~vector() will run before the program 
+        exits the scope, preventing memory leaks even during errors.
+        Would you like to see what happens during copying or moving a class with std::vector, or how 
+        member initialization order affects construction and destruction?
+
+        std::vector<int>* high_scores; is a raw pointer, and using it breaks the Rule of Zero.
+        Even though it points to a std::vector, the variable high_scores itself is just a memory 
+        address (indicated by the *). When your class is destroyed, the compiler only destroys the 
+        pointer address—it does not call ~vector() on the object it points to unless you manually 
+        write delete high_scores; in a custom destructor.
+
+        
+
+
